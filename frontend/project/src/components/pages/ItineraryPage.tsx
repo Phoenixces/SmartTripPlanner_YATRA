@@ -23,6 +23,8 @@ const ItineraryPage: React.FC = () => {
   const mockTripPlan = {
     id: "mock_trip",
     destination: "Goa",
+    startingPlace: "Mumbai",
+    startDate: "2025-09-25",
     duration: 5,
     totalBudget: 50000,
     themes: ["nightlife", "food", "adventure"],
@@ -143,25 +145,32 @@ const ItineraryPage: React.FC = () => {
       // Add trip summary
       doc.setFontSize(12);
       doc.setTextColor(0, 0, 0);
-      doc.text(`Duration: ${displayPlan.duration} days`, 20, 30);
+      doc.text(`Starting From: ${displayPlan.startingPlace}`, 20, 30);
+      doc.text(`Departure Date: ${new Date(displayPlan.startDate).toLocaleDateString('en-US', { 
+        weekday: 'short', 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      })}`, 20, 37);
+      doc.text(`Duration: ${displayPlan.duration} days`, 20, 44);
       doc.text(
         `Total Budget: ₹${displayPlan.costBreakdown.total.toLocaleString()}`,
         20,
-        37
+        51
       );
 
       // Add smart adjustments
       doc.setFontSize(14);
       doc.setTextColor(204, 102, 0);
-      doc.text("Smart Adjustments", 20, 47);
+      doc.text("Smart Adjustments", 20, 61);
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
 
       displayPlan.smartAdjustments.forEach((adjustment, index) => {
-        doc.text(adjustment, 20, 55 + index * 7);
+        doc.text(adjustment, 20, 69 + index * 7);
       });
 
-      let yPosition = 55 + displayPlan.smartAdjustments.length * 7 + 10;
+      let yPosition = 69 + displayPlan.smartAdjustments.length * 7 + 10;
 
       // Add itinerary details day by day
       displayPlan.itinerary.forEach((day) => {
@@ -298,6 +307,38 @@ const ItineraryPage: React.FC = () => {
           </div>
         </motion.div>
 
+        {/* Trip Origin and Start Date Information */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 mb-6"
+        >
+          <div className="flex items-start space-x-3">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full">
+              <div className="flex items-center space-x-3 mb-2 md:mb-0">
+                <MapPin className="h-5 w-5 text-purple-600" />
+                <span className="font-medium text-gray-800">
+                  Starting From: <span className="font-semibold text-purple-700">{displayPlan.startingPlace}</span>
+                </span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Calendar className="h-5 w-5 text-orange-600" />
+                <span className="font-medium text-gray-800">
+                  Departure Date: <span className="font-semibold text-orange-700">
+                    {new Date(displayPlan.startDate).toLocaleDateString('en-US', { 
+                      weekday: 'short', 
+                      year: 'numeric', 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+        
         {/* Smart Adjustments Banner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
