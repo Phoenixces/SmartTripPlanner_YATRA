@@ -30,6 +30,8 @@ export interface ItineraryDay {
 export interface TripPlan {
   id: string;
   destination: string;
+  startingPlace: string;
+  startDate: string;
   duration: number;
   totalBudget: number;
   themes: string[];
@@ -49,6 +51,8 @@ export interface TripInput {
   duration: number;
   destination: string;
   themes: string[];
+  startingPlace: string;
+  startDate: string;
 }
 
 export interface BookingDetails {

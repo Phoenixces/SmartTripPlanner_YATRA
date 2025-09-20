@@ -14,7 +14,9 @@ const TripInputPage: React.FC = () => {
     budget: 10000,
     duration: 2,
     destination: '',
-    themes: []
+    themes: [],
+    startingPlace: '',
+    startDate: new Date().toISOString().split('T')[0]
   });
   
   const [isGenerating, setIsGenerating] = useState(false);
@@ -72,6 +74,8 @@ const TripInputPage: React.FC = () => {
     return {
       id: `trip_${Date.now()}`,
       destination: selectedDestination,
+      startingPlace: input.startingPlace,
+      startDate: input.startDate,
       duration: input.duration,
       totalBudget: input.budget,
       themes: input.themes,
@@ -95,8 +99,8 @@ const TripInputPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.destination || formData.themes.length === 0) {
-      alert('Please select a destination and at least one travel theme');
+    if (!formData.destination || formData.themes.length === 0 || !formData.startingPlace || !formData.startDate) {
+      alert('Please fill in all required fields: starting place, start date, destination and at least one travel theme');
       return;
     }
 
@@ -139,6 +143,37 @@ const TripInputPage: React.FC = () => {
         >
           <form onSubmit={handleSubmit} className="space-y-8">
             
+            <div className="flex justify-between space-x-4">
+              {/* Starting Place Input */}
+              <div className="flex-1 space-y-4">
+              <label className="flex items-center space-x-2 text-lg font-semibold text-gray-700">
+                <MapPin className="h-5 w-5 text-purple-600" />
+                <span>Starting From</span>
+              </label>
+              <input
+                type="text"
+                value={formData.startingPlace}
+                onChange={(e) => setFormData(prev => ({ ...prev, startingPlace: e.target.value }))}
+                placeholder="Enter your starting location"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              </div>
+
+              {/* Trip Start Date */}
+              <div className="flex-1 space-y-4">
+              <label className="flex items-center space-x-2 text-lg font-semibold text-gray-700">
+                <Calendar className="h-5 w-5 text-orange-600" />
+                <span>Trip Start Date</span>
+              </label>
+              <input
+                type="date"
+                value={formData.startDate}
+                onChange={(e) => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              </div>
+            </div>
+
             {/* Budget Input */}
             <div className="space-y-4">
               <label className="flex items-center space-x-2 text-lg font-semibold text-gray-700">
@@ -178,6 +213,8 @@ const TripInputPage: React.FC = () => {
                 ))}
               </select>
             </div>
+
+            
 
             {/* Destination Selection */}
             <div className="space-y-4">
