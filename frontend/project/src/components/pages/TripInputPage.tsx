@@ -15,7 +15,7 @@ const TripInputPage: React.FC = () => {
     duration: 2,
     destination: '',
     themes: [],
-    startingPlace: '',
+    startingPlace: 'Bangalore',
     startDate: new Date().toISOString().split('T')[0]
   });
   

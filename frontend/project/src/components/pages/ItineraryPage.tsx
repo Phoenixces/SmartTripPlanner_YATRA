@@ -372,7 +372,7 @@ const ItineraryPage: React.FC = () => {
                       <div className="flex items-center space-x-1">
                         <IndianRupee className="h-4 w-4" />
                         <span className="font-semibold">
-                          ₹{day.totalCost.toLocaleString()}
+                          {day.totalCost.toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -466,7 +466,7 @@ const ItineraryPage: React.FC = () => {
                                   <div className="flex items-center space-x-1 text-green-600 font-medium">
                                     <IndianRupee className="h-4 w-4" />
                                     <span>
-                                      ₹{effectiveActivity.cost.toLocaleString()}
+                                      {effectiveActivity.cost.toLocaleString()}
                                     </span>
                                   </div>
                                 )}

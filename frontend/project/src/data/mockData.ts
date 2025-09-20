@@ -37,6 +37,8 @@ export interface TripPlan {
   totalBudget: number;
   themes: string[];
   itinerary: ItineraryDay[];
+  startingPlace: string;
+  startDate: string;
   costBreakdown: {
     accommodation: number;
     transport: number;
@@ -291,6 +293,8 @@ export const mockTripPlan = {
   destination: "Goa",
   duration: 5,
   totalBudget: 50000,
+  startingPlace: "Bangalore",
+  startDate: "2024-03-15",
   themes: ["nightlife", "food", "adventure"],
   itinerary: [
     {
