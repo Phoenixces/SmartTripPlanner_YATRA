@@ -11,8 +11,8 @@ const TripInputPage: React.FC = () => {
   
   // Form state management
   const [formData, setFormData] = useState<TripInput>({
-    budget: 50000,
-    duration: 5,
+    budget: 10000,
+    duration: 2,
     destination: '',
     themes: []
   });
@@ -173,7 +173,7 @@ const TripInputPage: React.FC = () => {
                 onChange={(e) => setFormData(prev => ({ ...prev, duration: Number(e.target.value) }))}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                {[3, 4, 5, 6, 7, 8, 9, 10].map(days => (
+                {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(days => (
                   <option key={days} value={days}>{days} Days</option>
                 ))}
               </select>
