@@ -26,6 +26,15 @@ const ItineraryPage: React.FC = () => {
   const [selectedAdjustments, setSelectedAdjustments] = useState({});
   // Track replacements by activity id
   const [replacements, setReplacements] = useState<Record<string, any>>({});
+  // Track disabled activities and adjusted cost breakdown
+  const [disabledActivities, setDisabledActivities] = useState<string[]>([]);
+  const [adjustedCostBreakdown, setAdjustedCostBreakdown] = useState({...mockTripPlan.costBreakdown});
+
+  // Initialize adjusted cost breakdown when trip plan changes
+  React.useEffect(() => {
+    setAdjustedCostBreakdown({...displayPlan.costBreakdown});
+    setDisabledActivities([]);
+  }, [tripPlan]);
 
   const handleReplace = (dayId: number, activityId: string, smart: any) => {
     setReplacements((prev) => ({
@@ -33,6 +42,35 @@ const ItineraryPage: React.FC = () => {
       [activityId]: smart,
     }));
     setOpenSmartAdjustments(null);
+  };
+  
+  // Handle toggling activities to adjust budget
+  const toggleActivity = (activityId: string, cost: number) => {
+    let newDisabled = [...disabledActivities];
+    
+    if (newDisabled.includes(activityId)) {
+      // Re-enable activity
+      newDisabled = newDisabled.filter(id => id !== activityId);
+      
+      // Add back the cost
+      setAdjustedCostBreakdown(prev => ({
+        ...prev,
+        activities: prev.activities + cost,
+        total: prev.total + cost
+      }));
+    } else {
+      // Disable activity
+      newDisabled.push(activityId);
+      
+      // Subtract the cost
+      setAdjustedCostBreakdown(prev => ({
+        ...prev,
+        activities: prev.activities - cost,
+        total: prev.total - cost
+      }));
+    }
+    
+    setDisabledActivities(newDisabled);
   };
 
 
@@ -116,10 +154,15 @@ const ItineraryPage: React.FC = () => {
 
         doc.setFontSize(14);
         doc.setTextColor(0, 102, 204);
-        doc.text(`Day ${day.day} (${day.date})`, 20, yPosition);
+        doc.text(`Day ${day.day}`, 20, yPosition);
         yPosition += 7;
 
         day.activities.forEach((activity) => {
+          // Skip disabled activities in PDF
+          if (disabledActivities.includes(activity.id)) {
+            return;
+          }
+          
           // Check if we need a new page
           if (yPosition > 270) {
             doc.addPage();
@@ -159,6 +202,7 @@ const ItineraryPage: React.FC = () => {
       doc.setTextColor(0, 0, 0);
       doc.text("Cost Breakdown", 105, 20, { align: "center" });
 
+      // Use adjusted costs for activities and total
       const tableData = [
         [
           "Accommodation",
@@ -170,11 +214,19 @@ const ItineraryPage: React.FC = () => {
         ],
         [
           "Activities",
-          `₹${displayPlan.costBreakdown.activities.toLocaleString()}`,
+          `₹${adjustedCostBreakdown.activities.toLocaleString()}`,
         ],
         ["Food", `₹${displayPlan.costBreakdown.food.toLocaleString()}`],
-        ["Total", `₹${displayPlan.costBreakdown.total.toLocaleString()}`],
+        ["Total", `₹${adjustedCostBreakdown.total.toLocaleString()}`],
       ];
+      
+      // Add savings row if applicable
+      if (adjustedCostBreakdown.total !== displayPlan.costBreakdown.total) {
+        tableData.push([
+          "Savings",
+          `₹${(displayPlan.costBreakdown.total - adjustedCostBreakdown.total).toLocaleString()}`
+        ]);
+      }
 
       autoTable(doc, {
       startY: 30,
@@ -317,14 +369,11 @@ const ItineraryPage: React.FC = () => {
                   <div className="bg-gradient-to-r from-blue-600 to-emerald-600 p-4 text-white">
                     <div className="flex items-center justify-between">
                       <h3 className="text-xl font-bold">Day {day.day}</h3>
-                      <div className="flex items-center space-x-4">
-                        <span className="text-sm opacity-90">{day.date}</span>
-                        <div className="flex items-center space-x-1">
-                          <IndianRupee className="h-4 w-4" />
-                          <span className="font-semibold">
-                            ₹{day.totalCost.toLocaleString()}
-                          </span>
-                        </div>
+                      <div className="flex items-center space-x-1">
+                        <IndianRupee className="h-4 w-4" />
+                        <span className="font-semibold">
+                          ₹{day.totalCost.toLocaleString()}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -373,16 +422,32 @@ const ItineraryPage: React.FC = () => {
                           )}
 
                           {/* Normal Activity Layout */}
-                          <div className="flex space-x-4">
+                          <div className={`flex space-x-4 ${disabledActivities.includes(effectiveActivity.id) ? 'opacity-50' : ''}`}>
                             <img
                               src={effectiveActivity.image}
                               alt={effectiveActivity.name}
                               className="w-20 h-20 object-cover rounded-lg"
                             />
                             <div className="flex-1">
-                              <h4 className="font-semibold text-gray-900 mb-1 flex items-center justify-between">
-                                {effectiveActivity.name}
-                              </h4>
+                              <div className="flex items-center justify-between mb-1">
+                                <h4 className="font-semibold text-gray-900">
+                                  {effectiveActivity.name}
+                                </h4>
+                                {effectiveActivity.cost > 0 && (
+                                  <motion.button
+                                    onClick={() => toggleActivity(effectiveActivity.id, effectiveActivity.cost)}
+                                    className={`px-2 py-1 rounded text-xs font-medium flex items-center ${
+                                      disabledActivities.includes(effectiveActivity.id)
+                                        ? 'bg-gray-200 text-gray-600'
+                                        : 'bg-green-100 text-green-700'
+                                    }`}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                  >
+                                    {disabledActivities.includes(effectiveActivity.id) ? 'Add Back' : 'Skip'}
+                                  </motion.button>
+                                )}
+                              </div>
                               <p className="text-gray-600 text-sm mb-2">
                                 {effectiveActivity.description}
                               </p>
@@ -486,6 +551,15 @@ const ItineraryPage: React.FC = () => {
               </h3>
 
               <div className="space-y-4">
+                {/* Show savings information if adjustments were made */}
+                {adjustedCostBreakdown.total !== displayPlan.costBreakdown.total && (
+                  <div className="mb-4 p-3 bg-green-50 border border-green-100 rounded-lg">
+                    <p className="text-green-700 text-sm font-medium">
+                      You've optimized your budget! Savings: ₹{(displayPlan.costBreakdown.total - adjustedCostBreakdown.total).toLocaleString()}
+                    </p>
+                  </div>
+                )}
+                
                 {[
                   {
                     key: "accommodation",
@@ -506,9 +580,10 @@ const ItineraryPage: React.FC = () => {
                     </div>
                     <span className="font-semibold text-gray-900">
                       ₹
-                      {displayPlan.costBreakdown[
-                        item.key as keyof typeof displayPlan.costBreakdown
-                      ].toLocaleString()}
+                      {(item.key === "activities" || item.key === "total" 
+                        ? adjustedCostBreakdown[item.key] 
+                        : displayPlan.costBreakdown[item.key as keyof typeof displayPlan.costBreakdown]
+                      ).toLocaleString()}
                     </span>
                   </div>
                 ))}
@@ -518,7 +593,7 @@ const ItineraryPage: React.FC = () => {
                 <div className="flex items-center justify-between text-lg font-bold text-gray-900">
                   <span>{t("total")}</span>
                   <span className="text-green-600">
-                    ₹{displayPlan.costBreakdown.total.toLocaleString()}
+                    ₹{adjustedCostBreakdown.total.toLocaleString()}
                   </span>
                 </div>
               </div>
