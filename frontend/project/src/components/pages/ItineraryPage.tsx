@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calendar,
@@ -15,90 +15,27 @@ import { useApp } from "../../context/AppContext";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
+import { mockTripPlan } from "../../data/mockData";
+
 // Itinerary display page showing generated trip plan
 const ItineraryPage: React.FC = () => {
   const { tripPlan, t, setCurrentPage } = useApp();
+  const [openSmartAdjustments, setOpenSmartAdjustments] = useState<
+    string | null
+  >(null);
+  const [selectedAdjustments, setSelectedAdjustments] = useState({});
+  // Track replacements by activity id
+  const [replacements, setReplacements] = useState<Record<string, any>>({});
+
+  const handleReplace = (dayId: number, activityId: string, smart: any) => {
+    setReplacements((prev) => ({
+      ...prev,
+      [activityId]: smart,
+    }));
+    setOpenSmartAdjustments(null);
+  };
 
   // Mock trip plan if none exists (for demo purposes)
-  const mockTripPlan = {
-    id: "mock_trip",
-    destination: "Goa",
-    duration: 5,
-    totalBudget: 50000,
-    themes: ["nightlife", "food", "adventure"],
-    itinerary: [
-      {
-        day: 1,
-        date: "2024-03-15",
-        activities: [
-          {
-            id: "act1",
-            name: "Arrival & Beach Relaxation",
-            type: "leisure",
-            duration: "4 hours",
-            cost: 0,
-            description: "Check-in and unwind at Baga Beach",
-            image:
-              "https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=400",
-            location: "Baga Beach",
-          },
-          {
-            id: "act2",
-            name: "Sunset Dinner Cruise",
-            type: "food",
-            duration: "3 hours",
-            cost: 2500,
-            description: "Romantic dinner with ocean views",
-            image:
-              "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=400",
-            location: "Mandovi River",
-          },
-        ],
-        totalCost: 2500,
-      },
-      {
-        day: 2,
-        date: "2024-03-16",
-        activities: [
-          {
-            id: "act3",
-            name: "Water Sports Adventure",
-            type: "adventure",
-            duration: "5 hours",
-            cost: 3500,
-            description: "Jet ski, parasailing, and banana boat",
-            image:
-              "https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=400",
-            location: "Calangute Beach",
-          },
-          {
-            id: "act4",
-            name: "Beach Shack Hopping",
-            type: "food",
-            duration: "4 hours",
-            cost: 1800,
-            description: "Local seafood and drinks",
-            image:
-              "https://images.pexels.com/photos/1109197/pexels-photo-1109197.jpeg?auto=compress&cs=tinysrgb&w=400",
-            location: "Anjuna Beach",
-          },
-        ],
-        totalCost: 5300,
-      },
-    ],
-    costBreakdown: {
-      accommodation: 15000,
-      transport: 8000,
-      activities: 12000,
-      food: 10000,
-      total: 45000,
-    },
-    smartAdjustments: [
-      "🌧️ Rain expected on Day 3 - Indoor cultural activities recommended",
-      "🎉 Local festival on Day 4 - Special carnival events added",
-      "💡 Peak season rates - Early morning bookings suggested",
-    ],
-  };
 
   const displayPlan = tripPlan || mockTripPlan;
 
@@ -356,47 +293,141 @@ const ItineraryPage: React.FC = () => {
 
                   {/* Activities */}
                   <div className="p-6 space-y-4">
-                    {day.activities.map((activity, index) => (
-                      <motion.div
-                        key={activity.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                      >
-                        <img
-                          src={activity.image}
-                          alt={activity.name}
-                          className="w-20 h-20 object-cover rounded-lg"
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900 mb-1">
-                            {activity.name}
-                          </h4>
-                          <p className="text-gray-600 text-sm mb-2">
-                            {activity.description}
-                          </p>
-                          <div className="flex items-center justify-between text-sm text-gray-500">
-                            <div className="flex items-center space-x-4">
-                              <div className="flex items-center space-x-1">
-                                <MapPin className="h-4 w-4" />
-                                <span>{activity.location}</span>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Clock className="h-4 w-4" />
-                                <span>{activity.duration}</span>
+                    {day.activities.map((activity, index) => {
+                      // If replacement exists → use that instead
+                      const effectiveActivity =
+                        replacements[activity.id] || activity;
+                      const hasWarning =
+                        !replacements[activity.id] && activity.reason;
+
+                      return (
+                        <motion.div
+                          key={effectiveActivity.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className={`flex flex-col space-y-4 p-4 rounded-lg transition-colors ${
+                            hasWarning
+                              ? "bg-orange-50 border border-orange-200"
+                              : "bg-gray-50 hover:bg-gray-100"
+                          }`}
+                        >
+                          {/* 🔶 Warning Message (if reason exists) */}
+                          {hasWarning && (
+                            <div className="flex items-center space-x-2 bg-orange-100 text-orange-800 px-3 py-2 rounded-md text-sm font-medium mb-2">
+                              <AlertCircle className="h-4 w-4" />
+                              <span>
+                                {activity.reason} — Consider Alternatives
+                              </span>
+                              <button
+                                onClick={() =>
+                                  setOpenSmartAdjustments(
+                                    openSmartAdjustments === activity.id
+                                      ? null
+                                      : activity.id
+                                  )
+                                }
+                                className="ml-auto text-xs underline text-orange-700 hover:text-orange-900"
+                              >
+                                View Options
+                              </button>
+                            </div>
+                          )}
+
+                          {/* Normal Activity Layout */}
+                          <div className="flex space-x-4">
+                            <img
+                              src={effectiveActivity.image}
+                              alt={effectiveActivity.name}
+                              className="w-20 h-20 object-cover rounded-lg"
+                            />
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-gray-900 mb-1 flex items-center justify-between">
+                                {effectiveActivity.name}
+                              </h4>
+                              <p className="text-gray-600 text-sm mb-2">
+                                {effectiveActivity.description}
+                              </p>
+                              <div className="flex items-center justify-between text-sm text-gray-500">
+                                <div className="flex items-center space-x-4">
+                                  <div className="flex items-center space-x-1">
+                                    <MapPin className="h-4 w-4" />
+                                    <span>{effectiveActivity.location}</span>
+                                  </div>
+                                  <div className="flex items-center space-x-1">
+                                    <Clock className="h-4 w-4" />
+                                    <span>{effectiveActivity.duration}</span>
+                                  </div>
+                                </div>
+                                {effectiveActivity.cost > 0 && (
+                                  <div className="flex items-center space-x-1 text-green-600 font-medium">
+                                    <IndianRupee className="h-4 w-4" />
+                                    <span>
+                                      ₹{effectiveActivity.cost.toLocaleString()}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             </div>
-                            {activity.cost > 0 && (
-                              <div className="flex items-center space-x-1 text-green-600 font-medium">
-                                <IndianRupee className="h-4 w-4" />
-                                <span>₹{activity.cost.toLocaleString()}</span>
-                              </div>
-                            )}
                           </div>
-                        </div>
-                      </motion.div>
-                    ))}
+
+                          {/* Smart Adjustments Grid */}
+                          <AnimatePresence>
+                            {openSmartAdjustments === activity.id && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 10 }}
+                                className="mt-4"
+                              >
+                                <h5 className="font-semibold text-gray-800 mb-3">
+                                  Things you might look out for
+                                </h5>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  {activity.smartAdjustments.map((smart) => (
+                                    <button
+                                      key={smart.id}
+                                      onClick={() =>
+                                        handleReplace(
+                                          day.day,
+                                          activity.id,
+                                          smart
+                                        )
+                                      }
+                                      className="flex space-x-3 p-3 bg-white rounded-lg shadow border hover:shadow-md transition"
+                                    >
+                                      <img
+                                        src={smart.image}
+                                        alt={smart.name}
+                                        className="w-16 h-16 object-cover rounded"
+                                      />
+                                      <div className="text-left">
+                                        <h5 className="font-medium">
+                                          {smart.name}
+                                        </h5>
+                                        <p className="text-xs text-gray-600">
+                                          {smart.description}
+                                        </p>
+                                        <div className="flex items-center justify-between text-xs mt-1 text-gray-500">
+                                          <span>{smart.location}</span>
+                                          <span>{smart.duration}</span>
+                                        </div>
+                                        {smart.cost > 0 && (
+                                          <div className="text-green-600 text-sm font-medium">
+                                            ₹{smart.cost.toLocaleString()}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 </motion.div>
               ))}
