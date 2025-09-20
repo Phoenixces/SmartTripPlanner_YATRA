@@ -19,6 +19,8 @@ export interface Activity {
   description: string;
   image: string;
   location: string;
+  reason:string;
+  smartAdjustments:Activity[]
 }
 
 export interface ItineraryDay {
@@ -108,7 +110,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 500,
       description: 'Explore the magnificent Mughal architecture',
       image: 'https://images.pexels.com/photos/789750/pexels-photo-789750.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Old Delhi'
+      location: 'Old Delhi',
+      reason:'',
+      smartAdjustments: []
     },
     {
       id: 'heritage-2',
@@ -118,7 +122,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 800,
       description: 'Discover royal artifacts and history',
       image: 'https://images.pexels.com/photos/3581364/pexels-photo-3581364.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'City Palace'
+      location: 'City Palace',
+      reason:'',
+      smartAdjustments: []
     }
   ],
   nightlife: [
@@ -130,7 +136,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 2000,
       description: 'Enjoy craft cocktails with city views',
       image: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Downtown'
+      location: 'Downtown',
+      reason:'',
+      smartAdjustments: []
     },
     {
       id: 'nightlife-2',
@@ -140,7 +148,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 1500,
       description: 'Dance to international DJs by the beach',
       image: 'https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Beachfront'
+      location: 'Beachfront',
+      reason:'',
+      smartAdjustments: []
     }
   ],
   adventure: [
@@ -152,7 +162,37 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 3000,
       description: 'Soar high above scenic valleys',
       image: 'https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Mountain Valley'
+      location: 'Mountain Valley',
+      reason: "Rain",
+          smartAdjustments: [
+            {
+              id: "act5a",
+              name: "Backwater Kayaking",
+              type: "water_sport",
+              duration: "3 hours",
+              cost: 3500,
+              description: "Paddle through calm backwaters with lush views.",
+              image:
+                "https://images.pexels.com/photos/1430672/pexels-photo-1430672.jpeg?auto=compress&cs=tinysrgb&w=400", // replace with one from above if preferred
+              location: "Chapora River, Goa",
+              reason:'',
+              smartAdjustments: []
+            },
+            {
+              id: "act5b",
+              name: "Indoor Surf Simulator",
+              type: "water_sport",
+              duration: "2 hours",
+              cost: 3500,
+              description: "Ride endless waves, rain or shine.",
+              image:
+                "https://images.pexels.com/photos/416676/pexels-photo-416676.jpeg?auto=compress&cs=tinysrgb&w=400",
+              location: "Candolim, Goa",
+              reason:'',
+              smartAdjustments: []
+            },
+          ],
+
     },
     {
       id: 'adventure-2',
@@ -162,7 +202,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 2500,
       description: 'Navigate thrilling rapids',
       image: 'https://images.pexels.com/photos/962464/pexels-photo-962464.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'River Rapids'
+      location: 'River Rapids',
+      reason:'',
+      smartAdjustments: []
     }
   ],
   wellness: [
@@ -174,7 +216,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 1800,
       description: 'Rejuvenate with traditional therapies',
       image: 'https://images.pexels.com/photos/3757952/pexels-photo-3757952.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Wellness Center'
+      location: 'Wellness Center',
+      reason:'',
+      smartAdjustments: []
     },
     {
       id: 'wellness-2',
@@ -184,7 +228,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 1200,
       description: 'Find inner peace with guided meditation',
       image: 'https://images.pexels.com/photos/1051838/pexels-photo-1051838.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Hilltop Retreat'
+      location: 'Hilltop Retreat',
+      reason:'',
+      smartAdjustments: []
     }
   ],
   shopping: [
@@ -196,7 +242,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 500,
       description: 'Explore authentic local markets',
       image: 'https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Old Market'
+      location: 'Old Market',
+      reason:'',
+      smartAdjustments: []
     },
     {
       id: 'shopping-2',
@@ -206,7 +254,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 800,
       description: 'Buy handcrafted souvenirs directly from makers',
       image: 'https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Craft Village'
+      location: 'Craft Village',
+      reason:'',
+      smartAdjustments: []
     }
   ],
   food: [
@@ -218,7 +268,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 800,
       description: 'Taste authentic local delicacies',
       image: 'https://images.pexels.com/photos/1109197/pexels-photo-1109197.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Food Street'
+      location: 'Food Street',
+      reason:'',
+      smartAdjustments: []
     },
     {
       id: 'food-2',
@@ -228,7 +280,9 @@ export const activitiesByTheme: Record<string, Activity[]> = {
       cost: 1500,
       description: 'Learn to cook regional specialties',
       image: 'https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg?auto=compress&cs=tinysrgb&w=400',
-      location: 'Culinary School'
+      location: 'Culinary School',
+      reason:'',
+      smartAdjustments: []
     }
   ]
 };
