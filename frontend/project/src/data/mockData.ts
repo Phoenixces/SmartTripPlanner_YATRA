@@ -232,6 +232,110 @@ export const activitiesByTheme: Record<string, Activity[]> = {
     }
   ]
 };
+export const mockTripPlan = {
+  id: "mock_trip",
+  destination: "Goa",
+  duration: 5,
+  totalBudget: 50000,
+  themes: ["nightlife", "food", "adventure"],
+  itinerary: [
+    {
+      day: 1,
+      date: "2024-03-15",
+      activities: [
+        {
+          id: "act1",
+          name: "Arrival & Beach Relaxation",
+          type: "leisure",
+          duration: "4 hours",
+          cost: 1000,
+          description: "Check-in and unwind at Baga Beach",
+          image:
+            "https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=400",
+          location: "Baga Beach",
+        },
+        {
+          id: "act2",
+          name: "Sunset Dinner Cruise",
+          type: "food",
+          duration: "3 hours",
+          cost: 1500,
+          description: "Romantic dinner with ocean views",
+          image:
+            "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=400",
+          location: "Mandovi River",
+        },
+      ],
+      totalCost: 2500,
+    },
+    {
+      day: 2,
+      date: "2024-03-16",
+      activities: [
+        {
+          id: "act3",
+          name: "Water Sports Adventure",
+          type: "adventure",
+          duration: "5 hours",
+          cost: 3500,
+          description: "Jet ski, parasailing, and banana boat",
+          image:
+            "https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=400",
+          location: "Calangute Beach",
+          reason: "Rain",
+          smartAdjustments: [
+            {
+              id: "act5a",
+              name: "Backwater Kayaking",
+              type: "water_sport",
+              duration: "3 hours",
+              cost: 3500,
+              description: "Paddle through calm backwaters with lush views.",
+              image:
+                "https://images.pexels.com/photos/1430672/pexels-photo-1430672.jpeg?auto=compress&cs=tinysrgb&w=400", // replace with one from above if preferred
+              location: "Chapora River, Goa",
+            },
+            {
+              id: "act5b",
+              name: "Indoor Surf Simulator",
+              type: "water_sport",
+              duration: "2 hours",
+              cost: 3500,
+              description: "Ride endless waves, rain or shine.",
+              image:
+                "https://images.pexels.com/photos/416676/pexels-photo-416676.jpeg?auto=compress&cs=tinysrgb&w=400",
+              location: "Candolim, Goa",
+            },
+          ],
+        },
+        {
+          id: "act4",
+          name: "Beach Shack Hopping",
+          type: "food",
+          duration: "4 hours",
+          cost: 1800,
+          description: "Local seafood and drinks",
+          image:
+            "https://images.pexels.com/photos/1109197/pexels-photo-1109197.jpeg?auto=compress&cs=tinysrgb&w=400",
+          location: "Anjuna Beach",
+        },
+      ],
+      totalCost: 5300,
+    },
+  ],
+  costBreakdown: {
+    accommodation: 15000,
+    transport: 8000,
+    activities: 12000,
+    food: 10000,
+    total: 45000,
+  },
+  smartAdjustments: [
+    "🌧️ Rain expected on Day 3 - Indoor cultural activities recommended",
+    "🎉 Local festival on Day 4 - Special carnival events added",
+    "💡 Peak season rates - Early morning bookings suggested",
+  ],
+};
 
 // Translations for multilingual support
 export const translations = {
