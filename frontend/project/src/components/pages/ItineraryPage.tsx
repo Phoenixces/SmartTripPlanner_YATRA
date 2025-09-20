@@ -146,7 +146,7 @@ const ItineraryPage: React.FC = () => {
       doc.setFontSize(12);
       doc.setTextColor(0, 0, 0);
       doc.text(`Starting From: ${displayPlan.startingPlace}`, 20, 30);
-      doc.text(`Departure Date: ${new Date(displayPlan.startDate).toLocaleDateString('en-US', { 
+      doc.text(`Trip Start Date: ${new Date(displayPlan.startDate).toLocaleDateString('en-US', { 
         weekday: 'short', 
         year: 'numeric', 
         month: 'short', 
@@ -325,7 +325,7 @@ const ItineraryPage: React.FC = () => {
               <div className="flex items-center space-x-3">
                 <Calendar className="h-5 w-5 text-orange-600" />
                 <span className="font-medium text-gray-800">
-                  Departure Date: <span className="font-semibold text-orange-700">
+                  Trip Start Date: <span className="font-semibold text-orange-700">
                     {new Date(displayPlan.startDate).toLocaleDateString('en-US', { 
                       weekday: 'short', 
                       year: 'numeric', 
