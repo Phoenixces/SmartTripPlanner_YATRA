@@ -13,6 +13,7 @@ import { MapsPage } from './components/pages/MapsPage';
 import LoginPage from './components/pages/LoginPage';
 import SignUpPage from './components/pages/SignUpPage';
 import ProfilePage from './components/pages/ProfilePage';
+import Chatbot from './components/chatbot/Chatbot';
 import "leaflet/dist/leaflet.css";
 
 
@@ -62,6 +63,9 @@ const AppContent: React.FC = () => {
       
       {/* Site-wide Footer */}
       <Footer />
+      
+      {/* Chatbot Component */}
+      <Chatbot />
     </div>
   );
 };

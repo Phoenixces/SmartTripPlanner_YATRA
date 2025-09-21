@@ -78,6 +78,18 @@ export interface User {
   favoriteDestinations: string[];
 }
 
+export interface ChatMessage {
+  id: string;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: string;
+}
+
+export interface ChatbotState {
+  isOpen: boolean;
+  messages: ChatMessage[];
+}
+
 // API Response interfaces for future integration
 export interface ApiResponse<T> {
   success: boolean;
