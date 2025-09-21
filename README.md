@@ -54,3 +54,9 @@ An AI-powered trip planner solution that generates optimized itineraries based o
 ## Architectural Diagram
 
 ![Architecture Diagram](diagrams/architecture.png)
+
+---
+
+## User Flow Diagram
+
+![User Flow Diagram](diagrams/user-flow.png)
