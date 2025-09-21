@@ -389,9 +389,8 @@ export const mockTripPlan = {
     total: 45000,
   },
   smartAdjustments: [
-    "🌧️ Rain expected on Day 3 - Indoor cultural activities recommended",
-    "🎉 Local festival on Day 4 - Special carnival events added",
-    "💡 Peak season rates - Early morning bookings suggested",
+    "🌧️ Rain expected on Day 2 - Indoor cultural activities recommended",
+    "💡 Save more by choosing weekdays over weekends.",
   ],
 };
 
