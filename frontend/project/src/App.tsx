@@ -13,6 +13,8 @@ import { MapsPage } from './components/pages/MapsPage';
 import LoginPage from './components/pages/LoginPage';
 import SignUpPage from './components/pages/SignUpPage';
 import ProfilePage from './components/pages/ProfilePage';
+import "leaflet/dist/leaflet.css";
+
 
 // Main App component that handles page routing and animations
 const AppContent: React.FC = () => {
