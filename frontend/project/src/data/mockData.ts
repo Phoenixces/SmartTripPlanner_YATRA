@@ -395,7 +395,55 @@ export const mockTripPlan = {
 };
 
 // Translations for multilingual support
-export const translations = {
+interface Translation {
+  appTitle: string;
+  tagline: string;
+  planMyTrip: string;
+  exploreMockTrips: string;
+  home: string;
+  plan: string;
+  itinerary: string;
+  booking: string;
+  budget: string;
+  tripDuration: string;
+  destination: string;
+  travelThemes: string;
+  generateItinerary: string;
+  dayByDay: string;
+  costBreakdown: string;
+  accommodation: string;
+  transport: string;
+  activities: string;
+  food: string;
+  total: string;
+  bookInOneClick: string;
+  shareTrip: string;
+  smartAdjustments: string;
+  payNow: string;
+  bookingConfirmed: string;
+  travelerDetails: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  login: string;
+  signup: string;
+  profile: string;
+  logout: string;
+  password: string;
+  confirmPassword: string;
+  name: string;
+  bio: string;
+  joinDate: string;
+  bookedTrips: string;
+  upcomingTrips: string;
+  favoriteDestinations: string;
+  editProfile: string;
+  saveChanges: string;
+  cancel: string;
+  maps: string;
+}
+
+export const translations: Record<string, Translation> = {
   en: {
     appTitle: 'Smart Travellers',
     tagline: 'Plan your perfect trip with AI-powered personalized itineraries',
@@ -440,7 +488,8 @@ export const translations = {
     favoriteDestinations: 'Favorite Destinations',
     editProfile: 'Edit Profile',
     saveChanges: 'Save Changes',
-    cancel: 'Cancel'
+    cancel: 'Cancel',
+    maps: 'Maps'
   },
   hi: {
     appTitle: 'स्मार्ट ट्रैवलर्स',
@@ -486,7 +535,8 @@ export const translations = {
     favoriteDestinations: 'पसंदीदा गंतव्य',
     editProfile: 'प्रोफाइल संपादित करें',
     saveChanges: 'परिवर्तन सहेजें',
-    cancel: 'रद्द करें'
+    cancel: 'रद्द करें',
+    maps: 'मैप्स'
   },
   ta: {
     appTitle: 'ஸ்மார்ட் ட்ராவலர்ஸ்',
@@ -532,52 +582,15 @@ export const translations = {
     favoriteDestinations: 'விருப்பமான இடங்கள்',
     editProfile: 'சுயவிவரத்தைத் திருத்து',
     saveChanges: 'மாற்றங்களைச் சேமி',
-    cancel: 'ரத்து செய்'
+    cancel: 'ரத்து செய்',
+    maps: 'வரைபடங்கள்'
   }
 };
-
-// Add maps translation to existing languages
-translations.en.maps = 'Maps';
-translations.hi.maps = 'मैप्स';
-if (!translations.ta.maps) {
-  translations.ta.maps = 'வரைபடங்கள்';
-}
-
-// Add explore places translations
-translations.en.explorePlaces = 'Explore Places';
-translations.hi.explorePlaces = 'स्थान देखें';
-translations.ta.explorePlaces = 'இடங்களை ஆராயுங்கள்';
-
-// Add about us translations
-translations.en.aboutUs = 'About Us';
-translations.hi.aboutUs = 'हमारे बारे में';
-translations.ta.aboutUs = 'எங்களைப் பற்றி';
-
-// Add smart suggestions translations
-translations.en.smartSuggestions = 'Smart Suggestions';
-translations.hi.smartSuggestions = 'स्मार्ट सुझाव';
-translations.ta.smartSuggestions = 'ஸ்மார்ட் பரிந்துரைகள்';
-
-// Add locate itinerary translations
-translations.en.locateItinerary = 'Locate My Itinerary';
-translations.hi.locateItinerary = 'मेरा यात्रा कार्यक्रम खोजें';
-translations.ta.locateItinerary = 'என் பயண அட்டவணையைக் கண்டறியவும்';
-
-// Ensure all translation objects have the new keys
-Object.keys(translations).forEach(lang => {
-  const langTranslations = translations[lang as keyof typeof translations] as Record<string, string>;
-  if (!langTranslations.maps) langTranslations.maps = 'Maps';
-  if (!langTranslations.aboutUs) langTranslations.aboutUs = 'About Us';
-  if (!langTranslations.explorePlaces) langTranslations.explorePlaces = 'Explore Places';
-  if (!langTranslations.smartSuggestions) langTranslations.smartSuggestions = 'Smart Suggestions';
-  if (!langTranslations.locateItinerary) langTranslations.locateItinerary = 'Locate My Itinerary';
-});
 
 // Fix the translation structure
 export const updatedTranslations = {
   en: {
     ...translations.en,
-    maps: 'Maps',
     aboutUs: 'About Us',
     explorePlaces: 'Explore Places',
     smartSuggestions: 'Smart Suggestions',
@@ -586,7 +599,6 @@ export const updatedTranslations = {
   },
   hi: {
     ...translations.hi,
-    maps: 'मैप्स',
     aboutUs: 'हमारे बारे में',
     explorePlaces: 'स्थान देखें',
     smartSuggestions: 'स्मार्ट सुझाव',
@@ -595,7 +607,6 @@ export const updatedTranslations = {
   },
   ta: {
     ...translations.ta,
-    maps: 'வரைபடங்கள்',
     aboutUs: 'எங்களைப் பற்றி',
     explorePlaces: 'இடங்களை ஆராயுங்கள்',
     smartSuggestions: 'ஸ்மார்ட் பரிந்துரைகள்',
