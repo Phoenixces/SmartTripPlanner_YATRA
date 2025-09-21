@@ -23,7 +23,7 @@ Clone the repository and set up the project locally:
 git clone https://github.com/your-username/smart-travellers.git
 
 # Move into project folder
-cd smart-travellers
+cd project
 
 # Install dependencies
 npm install
