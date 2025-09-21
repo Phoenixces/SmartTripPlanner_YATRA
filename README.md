@@ -1,41 +1,56 @@
-# 🌍 Smart Travellers – AI Powered Travel Planner  
+# AITripPlanner - Smart Travellers
 
-✨ **Plan smarter, travel better** with **Smart Travellers** – an AI-powered personalized trip planner that dynamically creates end-to-end itineraries tailored to your **budget, interests, and real-time conditions** – with seamless booking at your fingertips.  
-
----
-
-## ✨ Features  
-- ✅ **Dynamic Itineraries** – adapts to budget, trip duration & travel themes *(heritage, nightlife, adventure, wellness, shopping, food)*  
-- ✅ **Multilingual Interface** – interactive support across regions in India  
-- ✅ **Smart Adjustments** – handles weather changes, delays, and last-minute bookings in real time  
-- ✅ **Optimized Cost Breakdown** – transparent pricing for accommodation, travel, food & activities  
-- ✅ **One-Click Booking** – confirm & pay seamlessly  
-- ✅ **Shareable Trips** – generate itineraries you can share with friends  
+An AI-powered trip planner solution that generates optimized itineraries based on your budget, interests, and travel duration — and lets you book everything and share the itinerary in one click.
 
 ---
 
-## 🚀 Getting Started  
+## 🚀 Features (Prototype / MVP)
 
-Clone the repository and set up the project locally:  
-
-```bash
-# Clone the repository
-git clone https://github.com/your-username/smart-travellers.git
-
-# Move into project folder
-cd project
-
-# Install dependencies
-npm install
-
-# Run the app
-npm run dev
-```
-
-## 📌 Future Enhancements
-- 🔔 Push notifications for smart travel updates
-- 💳 Real payment gateway integration
+- Generate personalized itinerary (hotels + experiences) based on user inputs: theme, budget, travel duration.  
+- Cost breakdown for all itinerary components (hotel, experience, transfers, meals etc.).  
+- Booking endpoint integration (sandbox/test inventory) to reserve selected hotels or experiences.  
+- Payment gateway integration (test mode) for one-click booking.  
+- Shareable itinerary: download as PDF, or link that you can send.  
+- Ability for user to modify itinerary (opt-in / opt-out items) to adjust cost before booking.
 
 ---
 
-##### 💡 Travel smarter with AI. Where will you go next? 🌏✨
+## 🧭 Why This Matters (Stand-Out Points)
+
+- **All-in-one flow**: Plan → Book → Pay → Share without leaving the app.  
+- **Real-time cost transparency**: See how skipping or adding items changes cost instantly.  
+- **Local / Authentic Options**: Includes reviews & local experiences to give richer suggestions.  
+- **User Flexibility**: Opt-out, toggle items, adjust budget.  
+- **Shareable & Downloadable Itinerary**: Makes it easy to share your travel plan with others.
+
+---
+
+| Component                     | Tool / Framework                                                                                                                                                                                                                                                                                                                                                                                    | Role / Usage in Prototype                                                                                                                                                     |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Frontend**                  | React + Vite (or React with Next.js)                                                                                                                                                                                                                                                                                                                                                                | UI screens: itinerary summary, cost breakdown, “Book & Pay”, share link / PDF                                                                                                 |
+| **Backend**                   | Node.js + Express or Python + FastAPI                                                                                                                                                                                                                                                                                                                                                               | Handles booking API calls, payment gateway integration, PDF generation, share & itinerary data, user / auth logic                                                             |
+| **Database / Storage**        | Supabase / Firebase / PostgreSQL                                                                                                                                                                                                                                                                                                                                                                    | Store user info, itineraries & components, booking & payment status, share tokens etc.                                                                                        |
+| **Payment Gateway**           | Razorpay / Stripe (sandbox / test mode)                                                                                                                                                                                                                                                                                                                                                             | To process booking payments, handle callbacks, confirm payments                                                                                                               |
+| **Booking / Inventory APIs**  | liteAPI / Booking.com sandbox / hotel / tours API                                                                                                                                                                                                                                                                                                                                                   | For fetching hotel / experience options and making booking stubs or real reservations in demo mode                                                                            |
+| **Shareable Itinerary / PDF** | jsPDF / html2pdf (frontend) or backend tools like Puppeteer / wkhtmltopdf                                                                                                                                                                                                                                                                                                                           | Generate shareable downloadable itineraries or send via link / email                                                                                                          |
+| **Maps / Location Services**  | Google Maps API                                                                                                                                                                                                                                                                                                                                                                                     | Show hotel/POI locations, map route, distances for better experience comparison                                                                                               |
+| **Google AI & ML**            | • Gemini (via Vertex AI / Gemini API) — for natural language / chat / theme-based user assistance; <br> • Vertex AI — for hosting models, prompt engineering, possibly fine-tuning / few-shot; <br> • Firebase — for user auth, possibly calling Gemini via Firebase + Vertex AI; <br> • BigQuery — for analytics, aggregating usage data, possibly for model training / insights & trend detection | To enable intelligent personalized suggestions, NLP/chat support, maybe adjusting itineraries via themes & preferences, multilingual support, analytics and model operations. |
+| **Hosting / DevOps**          | Vercel / Netlify / Render / Heroku (free tiers)                                                                                                                                                                                                                                                                                                                                                     | Host frontend & backend; use CI/CD pipelines if possible                                                                                                                      |
+
+
+---
+
+## 🗺 User Flow
+
+1. User enters trip parameters: destination, dates, themes, budget.  
+2. System generates an itinerary with suggested hotels, experiences etc. + cost breakdown.  
+3. User tweaks the itinerary (adds/removes experiences, meals, transfers) and sees updated cost.  
+4. User clicks **Book & Pay** — backend creates booking stub + initiates payment via gateway.  
+5. User completes payment in test mode.  
+6. After payment success, app shows confirmation and allows user to download or share itinerary (PDF / link).
+
+---
+
+## Architectural Diagram
+
+![Architecture Diagram](diagrams/architecture.png)
