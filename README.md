@@ -60,3 +60,8 @@ An AI-powered trip planner solution that generates optimized itineraries based o
 ## User Flow Diagram
 
 ![User Flow Diagram](diagrams/user-flow.png)
+
+## Video Link
+[Watch the Demo Video Here](https://drive.google.com/file/d/17KbH5NAW9t4IIa_IKB-eZ_MNg1ognyQq/view?usp=sharing) 
+
+
